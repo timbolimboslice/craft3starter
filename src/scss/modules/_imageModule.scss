@@ -1,0 +1,17 @@
+@import 'vars';
+
+.image-module {
+	picture + figcaption {
+		margin-top: 10px;
+	}
+
+	figcaption.site-width {
+		padding-left: $col-base;
+	}
+
+	.has-max-height img {
+		object-fit: cover;
+		object-position: 50% 50%;
+		font-family: 'object-fit: cover; object-position: 50% 50%;';
+	}
+}

@@ -1,13 +1,13 @@
 {
-  "name": "lookthinkmake",
-  "title": "lookthinkmake",
-  "author": "lookthinkmake",
-  "url": "https://github.com/lookthinkmake/lookthinkmake",
+  "name": "craft3starter",
+  "title": "craft3starter",
+  "author": "Tim Biery",
+  "url": "https://github.com/timbolimboslice/craft3starter",
   "version": "1.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lookthinkmake/lookthinkmake.git"
+    "url": "https://github.com/timbolimboslice/craft3starter.git"
   },
   "devDependencies": {
     "babel-preset-env": "^1.6.1",

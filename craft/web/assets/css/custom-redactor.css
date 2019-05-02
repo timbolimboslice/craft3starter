@@ -1,0 +1,23 @@
+.redactor-styles p.text-smaller {
+  font-size: 12px;
+  line-height: 18px; }
+
+.redactor-styles p.text-small {
+  font-size: 14px;
+  line-height: 20px; }
+
+.redactor-styles p.text-base {
+  font-size: 16px;
+  line-height: 22px; }
+
+.redactor-styles p.text-large {
+  font-size: 18px;
+  line-height: 26px; }
+
+.redactor-styles p.text-larger {
+  font-size: 20;
+  line-height: 30px; }
+
+.redactor-styles p.text-largest {
+  font-size: 22px;
+  line-height: 34px; }

@@ -1,0 +1,253 @@
+@import 'vars';
+
+
+header {
+	position: fixed;
+	width: 100%;
+	height: $header-height;
+	left: 0;
+	top: 0;
+	z-index: 100;
+	//background-color: $dark-blue;
+	background-color: #153440;
+
+	.header-inner {
+		padding: 10px;
+	}
+
+	h1 {
+		margin-bottom: 0;
+		margin-right: 3.5%;
+		line-height: 0;
+	}
+
+		h1 a {
+			width: 140px;
+			height: 65px;
+			position: relative;
+			//text-indent: -2000px;
+			overflow: hidden;
+			display: inline-block;
+
+			span {
+				text-indent: -2000px;
+				display: block;
+			}
+		}
+
+	.header-logo path {
+		fill: $tan;
+	}
+
+	nav {
+		width: 100%;
+	}
+
+	.nav-list {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		margin-top: auto;
+		margin-bottom: auto;
+		justify-content: flex-start;
+	}
+
+	.tier-1 {
+		margin: 26px 3.5% 0 3.5%;
+		position: relative;
+	} 
+		.tier-1.home-link {
+			margin: auto 25px;
+		}
+
+		.tier-1:hover > .tier-2-wrapper {
+			display: block;
+		}
+
+	.tier-1 a {
+		color: #F7F1EC;
+		transition: color .1s ease-in-out;
+	}
+		.tier-1 a:hover {
+			//color: $ut-orange;
+		}
+
+	.tier-2-wrapper {
+		display: none;
+		position: absolute;
+		left: -20px;
+		top: 35px;
+		width: 180px;
+		z-index: 10;
+		box-shadow: 0 4px 40px rgba(0,0,0,.15);
+		background: #ffffff;
+	}
+
+	.tier-2 a {
+		display: block;
+		padding: 15px 20px 12px 20px;
+		background-color: $tan;
+		color: $dark-blue;
+		margin-bottom: 0;
+		transition: background-color .2s ease-in-out;
+	}
+
+		.tier-2 a:hover {
+			background-color: rgba($gold, .3);
+			//color: $ut-orange;
+		}
+}
+
+#burger {
+	display: none;
+	width: 32px;
+	height: 28px;
+	padding: 3px;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+}
+
+.bar {
+	width: 100%;
+	height: 3px;
+	display: block;
+	margin-bottom: 4px;
+	position: relative;
+	background: $tan;
+}
+
+	.bar.b-one:before,
+	.bar.b-one:after,
+	.bar.b-three:before,
+	.bar.b-three:after {
+		position: absolute;
+		left: 0;
+		top: 0;
+		content: '';
+		width: 50%;
+		height: 3px;
+		//background: $light-tan;
+		display: inline-block;
+		transform: rotate(0deg);
+		transition: all .3s ease-in-out;
+		//transform-origin: 100% 50%;
+	}
+
+		// .bar.b-one:before {
+		// 	transform-origin: top right;
+		// }
+
+		// .bar.b-one:after {
+		// 	transform-origin: top right;
+		// }
+
+		.bar.b-three:after,
+		.bar.b-one:after {
+			left: 50%;
+		}
+
+	.bar.b-two {
+		//background: $light-tan;
+		opacity: 1;
+		transition: opacity .3s ease-in-out;
+	}
+
+
+//nav open styles
+
+	.nav-open {
+		.header-inner {
+			height: 100vh;
+			width: 100vw;
+			overflow-y: scroll;
+			-webkit-overflow-scrolling: touch;
+			//background: $dark-green;
+		}
+
+		.nav-list {
+			flex-wrap: wrap;
+			flex-direction: row;
+			padding-top: 80px;
+			justify-content: space-between;
+		}
+
+
+		.nav-list .tier-1 {
+			opacity: 1;
+			height: auto;
+			flex-basis: 45%;
+			margin: 0 0 40px 0;
+		}
+
+		.nav-list .tier-1.home-link {
+			flex-basis: 100%;
+			width: 100%;
+			margin: 0 auto;
+			text-align: center;
+			position: fixed;
+			top: 0;
+			left: 0;
+			padding: 10px; 
+			//background: $dark-green;
+			z-index: 10;
+			//box-shadow: 0 1px 6px rgba(45,42,40,.5);
+			box-shadow: none;
+		}
+
+		.tier-2-wrapper {
+			display: block;
+			position: relative;
+			width: auto;
+			top: auto;
+			left: auto;
+			box-shadow: none;
+			margin-top: 10px;
+		}
+
+		.tier-2 a {
+			//font-size: 1rem;
+			background: none;
+			padding: 10px 0;
+			border-top: 1px solid rgba($tan, .1);
+			color: $tan;
+		}
+
+			.tier-2:first-child a {
+				border-top: 1px solid rgba($tan, .4);
+		
+			}
+
+		.bar.b-one:after,
+		.bar.b-three:before {
+			transform: rotate(-45deg);
+			width: 55%;
+		}
+
+		.bar.b-one:before {
+			transform: rotate(45deg) translate(2px, 2px);
+		}
+
+		.bar.b-one:after {
+			transform: rotate(-45deg) translate(-6px, -2px);
+		}
+
+		.bar.b-three:before {
+			transform: rotate(-45deg) translate(2px, -2px);
+		}
+
+		.bar.b-three:after {
+			transform: rotate(45deg) translate(-4px, 2px);
+		}
+
+
+
+		// .bar.b-one:before,
+		// .bar.b-three:after {
+		// 	transform: rotate(45deg);
+		// }
+
+		.bar.b-two {
+			opacity: 0;
+		}
+	}

@@ -1,4 +1,7 @@
 /.env
 /.idea
 /vendor
+/web/assets/imager/*
+/web/assets/images/_*
+
 .DS_Store

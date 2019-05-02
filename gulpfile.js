@@ -1,132 +1,140 @@
-"use strict";
+var gulp = require('gulp'),
+    sass = require('gulp-sass'),
+    browserSync = require('browser-sync').create(),
+    autoprefixer = require('gulp-autoprefixer'),
+    uglify = require('gulp-uglify'),
+    header  = require('gulp-header'),
+    rename = require('gulp-rename'),
+    watch = require('gulp-watch'),
+    cleanCSS = require('gulp-clean-css'),
+    neat = require('node-neat').includePaths,
+    concat = require('gulp-concat'),
+    imagemin = require('gulp-imagemin'),
+    plumber = require('gulp-plumber'),
+    gutil = require('gulp-util'),
+    babel = require('gulp-babel'),
+    bourbon = require('node-bourbon').includePaths;
 
-// Load plugins
-const autoprefixer = require("autoprefixer");
-const browsersync = require("browser-sync").create();
-const cssnano = require("cssnano");
-const del = require("del");
-const eslint = require("gulp-eslint");
-const gulp = require("gulp");
-const plumber = require("gulp-plumber");
-const postcss = require("gulp-postcss");
-const rename = require("gulp-rename");
-const sass = require("gulp-sass");
-const webpack = require("webpack");
-const webpackconfigScripts = require("./webpack-scripts.config.js");
-const webpackconfigPlugins = require("./webpack-plugins.config.js");
-const webpackstream = require("webpack-stream");
-const babel = require('gulp-babel');
-const terser = require('gulp-terser');
-const concat = require('gulp-concat');
-
-// BrowserSync
-function browserSync(done) {
-    browsersync.init({
-        proxy: "http://dev.SOMEDOMAIN.com"
-    });
-    done();
-}
-
-// BrowserSync Reload
-function browserSyncReload(done) {
-  browsersync.reload();
-  done();
-}
-
-// Clean assets
-function clean() {
-    del(["./craft/web/assets/css"]);
-    del(["./craft/web/assets/js"]);
-    return;
-}
-
-// CSS task
-function css() {
-    return (
-    gulp
-        .src("src/scss/**.scss")
-        .pipe(plumber())
-        .pipe(sass({ outputStyle: "expanded" }))
-        .pipe(gulp.dest("craft/web/assets/css"))
-        .pipe(rename({ suffix: ".min" }))
-        .pipe(postcss([autoprefixer(), cssnano()]))
-        .pipe(gulp.dest("craft/web/assets/css"))
-        .pipe(browsersync.stream())
-    );
-}
-
-
-// Lint scripts
-function scriptsLint(done) {
-  // return gulp
-  //   .src(["src/js/scripts.js", "./gulpfile.js"])
-  //   .pipe(plumber())
-  //   .pipe(eslint())
-  //   .pipe(eslint.format())
-  //   .pipe(eslint.failAfterError());
-  done();
-}
-
-// Transpile, concatenate and minify script
-function scripts() {
-  return (
-     gulp.src('src/js/scripts.js')
-        .pipe(babel().on('error', function(err){
-            console.log(err)
-        }))
-        .pipe(gulp.dest('craft/web/assets/js'))
-        .pipe(terser().on('error', function(err) {
-            console.log(err)
-        }))
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest('craft/web/assets/js'))
-        .pipe(browsersync.stream())
-        .on('error', function(err){
+gulp.task('css', function () {
+    gulp.src('src/scss/style.scss')
+        .pipe(plumber({ errorHandler: onError }))
+        .pipe(sass({
+            errLogToConsole: true,
+            includePaths: ['css'].concat(neat).concat(bourbon)
+        })).on('error', function(err){
             console.log(err)
         })
-  );
-}
+        .pipe(autoprefixer('last 4 version'))
+        .pipe(gulp.dest('craft/web/assets/css'))
+        .pipe(cleanCSS({
+            advanced: false,
+            aggressiveMerging: false
+        }))
+        .pipe(rename({ suffix: '.min' }))
+        //.pipe(header(banner, { package : package }))
+        .pipe(gulp.dest('craft/web/assets/css'))
+        .pipe(browserSync.reload({stream:true}))
+        .on('error', function(err){
+            console.log(err)
+        });
 
-// Transpile, concatenate and minify plugins
-function jsPlugins() {
-  return (
+    gulp.src('src/scss/custom-redactor.scss')
+        .pipe(plumber({ errorHandler: onError }))
+        .pipe(sass({
+            errLogToConsole: true,
+            includePaths: ['css']
+        })).on('error', function(err){
+            console.log(err)
+        })
+        .pipe(autoprefixer('last 4 version'))
+        .pipe(gulp.dest('craft/web/assets/css'))
+        .pipe(cleanCSS({
+            advanced: false,
+            aggressiveMerging: false
+        }))
+        .pipe(rename({ suffix: '.min' }))
+        //.pipe(header(banner, { package : package }))
+        .pipe(gulp.dest('craft/web/assets/css'))
+        .pipe(browserSync.reload({stream:true}))
+        .on('error', function(err){
+            console.log(err)
+        });
+
+    //return;
+});
+
+
+gulp.task('js',function(){
     gulp.src('src/js/plugins/*.js')
-      .pipe(concat('plugins.js'))
-      .pipe(terser().on('error', function(err){
-        console.log(err)
-      }))
-      .pipe(gulp.dest('craft/web/assets/js'))
-      .pipe(browsersync.stream())
-  )
-}
+        .pipe(concat('plugins.js'))
+        .pipe(uglify({
+            mangle: true
+        })).on('error', function(err){
+            console.log(err)
+        })
+        .pipe(gulp.dest('craft/web/assets/js'))
+        .pipe(browserSync.reload({stream:true, once: true}));
 
-function notify(done) {
-  browsersync.notify("Compiling, please wait.");
-  done();
-}
+    gulp.src('src/js/scripts.js')
+        //.pipe(header(banner, { package : package }))
+        .pipe(babel({presets: ['env']})).on('error', function(err){
+            console.log(err)
+        })
+        .pipe(gulp.dest('craft/web/assets/js'))
+        .pipe(uglify()).on('error', function(err){
+            console.log(err)
+        })
+        //.pipe(header(banner, { package : package }))
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(gulp.dest('craft/web/assets/js'))
+        .pipe(browserSync.reload({stream:true, once: true}))
+        .on('error', function(err){
+            console.log(err)
+        });
+    //return;
+});
 
-// Watch files
-function watchFiles() {
-  //gulp.watch("src/scss/**.scss", css);
-  gulp.watch("src/scss/**.scss", gulp.series(notify, css));
-  gulp.watch("src/js/**.js", gulp.series(scriptsLint, notify, scripts, jsPlugins));
-  gulp.watch(
-    [
-      "./craft/templates/**/*.*"
-    ],
-    gulp.series(browserSyncReload, notify)
-  );
-}
 
-// define complex tasks
-const js = gulp.series(scriptsLint, scripts, jsPlugins);
-const build = gulp.series(clean, gulp.parallel(css, js));
-const watch = gulp.parallel(watchFiles, browserSync);
+gulp.task('browser-sync', function() {
+    browserSync.init({
+        proxy: "http://dev.craft3starter.com"
+    });
+});
 
-// export tasks
-exports.css = css;
-exports.js = js;
-exports.clean = clean;
-exports.build = build;
-exports.watch = watch;
-exports.default = build;
+gulp.task('bs-reload', function () {
+    browserSync.reload();
+});
+
+
+gulp.task('watch', ['browser-sync'], function () {
+    browserSync.notify("Compiling, please wait");
+    gulp.watch("src/scss/**.scss", ['css']);
+    gulp.watch("src/js/**.js", ['js']);
+    gulp.watch('./craft/templates/**/*.*', ['bs-reload']);
+});
+
+var img_paths = {
+  files: './craft/web/assets/images/**/*.{gif,jpg,png}',
+  filesDest: './craft/web/assets/images',
+};
+
+// Optimize Images task
+gulp.task('img', function() {
+  return gulp.src(img_paths.files, { base: './craft/web/assets/images'} )
+    .pipe(imagemin({
+        progressive: true,
+        interlaced: true,
+        svgoPlugins: [ {removeViewBox:false}, {removeUselessStrokeAndFill:false} ]
+    }))
+    .pipe(gulp.dest(img_paths.filesDest))
+});
+
+// error function for plumber
+var onError = function (err) {
+  gutil.beep();
+  console.log(err);
+  this.emit('end');
+};
+
+gulp.task('default', ['css', 'js']);
+gulp.task('images', ['img']);

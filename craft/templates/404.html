@@ -1,0 +1,18 @@
+{% extends "_layout" %}
+
+{% block content %}
+	<section class="site-width">
+		<div class="default content" style="min-height: 600px;">
+			<h1 class="center-text" style="margin-top: 200px;">Page Not Found</h1>
+			<p class="center-text"><a href="{{ siteUrl }}">Return Home</a></p>
+		</div>
+	</section>
+	
+	<script>
+	    $(function () {
+	        var this_page = new Default_Page();
+	        this_page.init();
+	    });
+	</script>
+
+{% endblock %}

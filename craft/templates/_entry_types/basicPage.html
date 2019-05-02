@@ -1,0 +1,38 @@
+{% block content %}
+
+
+	{% set pageHeroObject = {} %}
+	{% set pageHeroObject = pageHeroObject|merge({
+		'block': {
+			'type': 'pageHeroModule',
+			'noMarginBottom': 0,
+			'headline': '',
+			'backgroundAsset': null
+		}
+	})%}
+
+	{% include "./_partials/_contentMatrix" with {
+		"matrix" : pageHeroObject
+	} %}
+
+	<article data-type="text-module" class="module text-module">
+		<div class="site-width">
+			<div class="content-wrapper col-9">
+				{% if entry.body is not empty %}
+					{{ entry.body | retcon([
+							["wrap", "img", ".img-wrapper"],
+							["wrap", "iframe", ".video-wrapper"]
+						])|raw
+					}}
+				{% endif %}
+			</div>
+		</div>
+	</article>
+
+	<script> 
+	    $(function () {
+	        var thisPage = new BlogStylePage();
+	        thisPage.init();
+	    });
+	</script>
+{% endblock %}

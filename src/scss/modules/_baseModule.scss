@@ -1,0 +1,9 @@
+@import 'vars';
+
+.module {
+	margin-bottom: 100px;
+
+	&.no-margin-bottom {
+		margin-bottom: 0;
+	}
+}

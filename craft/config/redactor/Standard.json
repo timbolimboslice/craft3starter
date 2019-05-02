@@ -1,6 +1,90 @@
 {
-  "buttons": ["formatting", "bold", "italic", "unorderedlist", "orderedlist", "link", "image", "video"],
-  "plugins": ["fullscreen", "video"],
-  "linkNewTab": true,
-  "toolbarFixed": true
+    "buttons": [
+        "html",
+        "formatting",
+        "bold",
+        "italic",
+        "unorderedlist",
+        "orderedlist",
+        "link",
+        "image",
+        "video",
+        "file",
+        "imagePosition"
+    ],
+    "plugins": [
+        "fullscreen",
+        "video",
+        "alignment"
+    ],
+    "toolbarFixed": true,
+    "imageFigure": true,
+    "imagePosition": true,
+    "removeScript": false,
+    "formattingAdd": {
+        "text-largest": {
+            "title": "Largest Text",
+            "args": [
+                "p",
+                "class",
+                "text-largest"
+            ]
+        },
+        "text-larger": {
+            "title": "Larger Text",
+            "args": [
+                "p",
+                "class",
+                "text-larger"
+            ]
+        },
+        "text-large": {
+            "title": "Large Text",
+            "args": [
+                "p",
+                "class",
+                "text-large"
+            ]
+        },
+        "text-base": {
+            "title": "Base Text (Normal)",
+            "args": [
+                "p",
+                "class",
+                "text-base"
+            ]
+        },
+        "text-small": {
+            "title": "Small Text",
+            "args": [
+                "p",
+                "class",
+                "text-small"
+            ]
+        },
+        "text-smaller": {
+            "title": "Smaller Text",
+            "args": [
+                "p",
+                "class",
+                "text-smaller"
+            ]
+        },
+        "button": {
+            "title": "Button",
+            "args": [
+                "p",
+                "class",
+                "btn"
+            ]
+        },
+        "two-columns": {
+            "title": "Two Column List",
+            "args": [
+                "ul",
+                "class",
+                "two-up"
+            ]
+        }
+    }
 }

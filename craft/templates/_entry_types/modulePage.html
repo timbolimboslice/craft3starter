@@ -1,0 +1,14 @@
+{% block content %}
+	
+
+	{% include "./_partials/_contentMatrix" with {
+		"matrix" : entry.moduleMatrix.all()
+	} %}
+
+	<script> 
+	    $(function () {
+	        var thisPage = new ModulePage();
+	        thisPage.init();
+	    });
+	</script>
+{% endblock %}

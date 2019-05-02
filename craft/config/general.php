@@ -12,7 +12,7 @@ return [
     // Global settings
     '*' => [
         // Default Week Start Day (0 = Sunday, 1 = Monday...)
-        'defaultWeekStartDay' => 1,
+        'defaultWeekStartDay' => 0,
 
         // Whether generated URLs should omit "index.php"
         'omitScriptNameInUrls' => true,
@@ -25,24 +25,33 @@ return [
 
         // Whether to save the project config out to config/project.yaml
         // (see https://docs.craftcms.com/v3/project-config.html)
-        'useProjectConfigFile' => false,
+        'useProjectConfigFile' => true,
+
+        'aliases' => [
+            '@baseUrl' => getenv('BASE_URL'),
+            '@basePath' => getenv('BASE_PATH'),
+        ],
+
+        'generateTransformsBeforePageLoad' => true,
+        'siteUrl' => getenv('SITE_URL'),
+        'siteName' => getenv('SITE_NAME'),
+        'systemEmailAddress' => getenv('SYSTEM_EMAIL_ADDRESS')
     ],
 
     // Dev environment settings
     'dev' => [
-        // Dev Mode (see https://craftcms.com/guides/what-dev-mode-does)
         'devMode' => true,
+        'backupCommand' => getenv('BACKUP_COMMAND'),
+        'restoreCommand' => getenv('RESTORE_COMMAND')
     ],
 
     // Staging environment settings
     'staging' => [
-        // Set this to `false` to prevent administrative changes from being made on staging
-        'allowAdminChanges' => true,
+        'devMode' => true
     ],
 
     // Production environment settings
     'production' => [
-        // Set this to `false` to prevent administrative changes from being made on production
-        'allowAdminChanges' => true,
+        'devMode' => false
     ],
 ];

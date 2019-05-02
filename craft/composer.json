@@ -1,7 +1,15 @@
 {
   "require": {
+    "aelvan/imager": "v2.1.10",
+    "carlcs/craft-redactorcustomstyles": "3.0.2",
     "craftcms/cms": "^3.0.0",
-    "vlucas/phpdotenv": "^2.4.0"
+    "craftcms/redactor": "2.3.3.2",
+    "ether/seo": "3.5.4",
+    "mmikkel/retcon": "2.0.12",
+    "superbig/craft-imagerpretransform": "2.0.2",
+    "verbb/super-table": "2.1.18",
+    "vlucas/phpdotenv": "^2.4.0",
+    "xpertbot/craft-wheelform": "1.25.3"
   },
   "autoload": {
     "psr-4": {

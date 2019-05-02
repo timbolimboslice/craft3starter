@@ -1,0 +1,49 @@
+@import 'vars';
+
+.text-module {
+	h1 { padding-top: 20px; }
+	h2 { padding-top: 18px; }
+	h3 { padding-top: 16px; }
+	h4 { padding-top: 14px; }
+	h5 { padding-top: 12px; }
+	h6 { padding-top: 10px; }
+
+	.img-wrapper,
+	.video-wrapper {
+		margin-bottom: 30px;
+	}
+
+	.site-width {
+		padding: 20px 7.5%;
+	}
+
+	.img-left {
+		float: left;
+		margin: 0 #{$col-gutter * 2} 0 -7.5%;
+		max-width: $col-base * 4 + $col-gutter * 3;
+	}
+
+	.img-right {
+		float: right;
+		margin: 0 -7.5% 0 #{$col-gutter * 2};
+		max-width: $col-base * 4 + $col-gutter * 3;
+	}
+
+	.img-center {
+		width: 100%;
+		margin: 0 auto 30px auto;
+	}
+
+	.img-left .img-wrapper,
+	.img-right .img-wrapper,
+	.img-center .img-wrapper {
+		margin-bottom: 0;
+	}
+
+	.img-left figcaption,
+	.img-right figcaption,
+	.img-center figcaption {
+		margin-top: 10px;
+		font-size: $text-small;
+	}
+}
