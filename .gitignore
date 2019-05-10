@@ -1,2 +1,10 @@
 node_modules
 package-lock.json
+
+/craft/.env
+/craft/.idea
+/craft/vendor/*
+/craft/web/assets/imager/*
+/craft/web/assets/images/**/_*
+/craft/web/cpresources/*
+**/.DS_Store
