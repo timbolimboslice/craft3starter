@@ -1,35 +1,29 @@
 @import 'vars';
 
+//form module
 .form-module,
 .form-text-module {
 	min-height: 700px;
 	position: relative;
-	padding-top: 50px;
-	padding-bottom: 50px;
-
-	&.add-border {
-		padding-top: 70px;
-		padding-bottom: 70px;
-	}
 
 	.form-wrapper {
 		position: relative;
 		margin: auto;
-
+		z-index: 1;
+		
 		form {
-			padding: 40px;
+			padding: 7%;
 			z-index: 2;
 			position: relative;
-		}
-
-		.bg-helper {
-			z-index: 1;
-			background-color: #ffffff;
 		}
 	}
 
 	.content-wrapper {
 		margin-bottom: 30px;
+	}
+
+	.form-side {
+		padding-bottom: 40px;
 	}
 
 	textarea,
@@ -39,36 +33,6 @@
 	input[type="email"],
 	input[type="tel"],
 	input[type="url"] {
-		width: 100%;
-		box-shadow: none;
-		background-color: $tan;
-	}
-
-	form.textured-bg {
-		textarea,
-		input[type="text"],
-		input[type="password"],
-		input[type="number"],
-		input[type="email"],
-		input[type="tel"],
-		input[type="url"] {
-			background-color: #ffffff;
-		}
-	}
-
-	.how-bout-us-wrapper {
-		margin: 20px auto;
-
-		em {
-			display: block;
-			font-size: $text-smaller;
-			font-family: $sans-serif-stack;
-			font-size: 11px;
-			font-weight: 700;
-			line-height: #{10px/$browser-context}rem;
-			color: rgba($black, .6);
-			margin-top: 20px;
-		}
 	}
 
 	.submit.btn {
@@ -76,5 +40,64 @@
 		max-width: 180px;
 		width: 100%;
 		display: block;
+	}
+}
+
+//form text module
+.form-text-module {
+	min-height: 1px;
+
+	.wf-form .btn {
+		margin: 0 auto;
+	}
+
+}
+
+@media screen and (max-width: 890px) {
+	//form module
+	.form-text-module {
+		& > .col-14.flex {
+			flex-wrap: wrap;
+		}
+
+		.content-side,
+		.form-side {
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.content-side {
+			order: 1;
+		}
+
+		.form-side {
+			order: 2;
+		}
+	}
+
+	.form-module {
+		.form-wrapper {
+			margin-bottom: 20px;
+		}
+	}
+}
+
+//laptop styles
+@media screen 
+and (orientation: landscape)
+and (max-height: 700px) {
+	.form-module,
+	.form-text-module {
+		.form-wrapper {
+			form {
+				padding: 4%;
+			}
+		}
+	}
+
+	.form-text-module {
+		.form-side .content-wrapper {
+			margin-bottom: 10px;
+		}
 	}
 }

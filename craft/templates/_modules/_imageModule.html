@@ -1,0 +1,87 @@
+{% block content %}
+    {% set img = block.image.one() %}
+    {% set blockStyle = "" %}
+    {% set blockClass = "" %}
+
+    {% if block.fullWidth %}
+        {% set blockClass = "full-width" %}
+        {% if block.maxHeight is not empty %}
+            {% set blockStyle = "style=max-height:" ~ block.maxHeight ~ "px"%}
+            {% set blockClass = blockClass ~ " has-max-height" %}
+        {% endif %}
+        {% if img.extension != 'svg' %}
+            {% set imgs = craft.imager.transformImage(img,
+                [
+                    { width: 1440, format: 'webp' },
+                    { width: 2880, format: 'webp' },
+                    { width: 1440 },
+                    { width: 2880 }
+                ],
+                {
+                    position: img.getFocalPoint()
+                }
+            ) %}
+        {% else %}
+            {% set image1x = img.url() %}
+            {% set image2x = img.url() %}
+        {% endif %}
+    {% else %}
+        {% set width = block.imageWidth is not empty ? block.imageWidth : 12 %}
+        {% set blockClass = "col-" ~ width ~ " center-col" %}
+        {% if img.extension != 'svg' %}
+            {% set imgWidth = (60 * width) + (20 * (width + 1)) %}
+            {% set imgs = craft.imager.transformImage(img,
+                [
+                    { width: imgWidth, format: 'webp' },
+                    { width: imgWidth * 2, format: 'webp' },
+                    { width: imgWidth },
+                    { width: imgWidth * 2 }
+                ],
+                {
+                    position: img.getFocalPoint(),
+                    mode: 'fit'
+                }
+            ) %}
+
+        {% else %}
+            {% set image1x = img.url() %}
+            {% set image2x = img.url() %}
+        {% endif %}
+    {% endif %}
+
+    <section data-type="image-module" 
+        class="module image-module {{ block.noMarginBottom ? 'no-margin-bottom' }} {{ block.fullWidth == false ? "side-padding" }}">
+
+        {% if block.mobilePercentage is not empty %}
+            {% css %}
+                @media screen and (max-width: 600px) {
+                    #module-count-{{ imgModuleCount }} {
+                        max-width: {{ block.mobilePercentage ~ 'vw' }};
+                        margin: 0 auto;
+                    }
+                }
+            {% endcss %}
+        {% endif %}
+
+        <div class="{{ blockClass }} vis-hide">
+            <figure id="module-count-{{ imgModuleCount }}" class="img-wrapper" {{ blockStyle }}>
+                <picture>
+                    {% if img.extension != 'svg' %}
+                        <source srcset="{{ imgs[0] }} 1x, {{ imgs[1] }} 2x" media="(min-width: 769px)" type="image/webp">
+                        <source srcset="{{ imgs[0] }} 1x, {{ imgs[1] }} 2x" media="(max-width: 768px)" type="image/webp">
+                        <source srcset="{{ imgs[2] }} 1x, {{ imgs[3] }} 2x" media="(min-width: 769px)" type="image/{{ img.extension }}">
+                        <source srcset="{{ imgs[2] }} 1x, {{ imgs[3] }} 2x" media="(max-width: 768px)" type="image/{{ img.extension }}">
+                        <img src="{{ imgs[2] }}" alt="{{ img.title }}" {{ blockStyle }} />
+                    {% else %}
+                        <source srcset="{{ image1x }} 1x, {{ image2x }} 2x" media="(min-width: 769px)" type="image/{{ img.extension }}">
+                        <source srcset="{{ image1x }} 1x, {{ image1x }} 2x" media="(max-width: 768px)" type="image/{{ img.extension }}">
+                        <img src="{{ image1x }}" alt="{{ img.title }}" {{ blockStyle }} />
+                    {% endif %}
+                </picture>
+                {% if block.caption is not empty %}
+                    <figcaption class="serif text-base">{{ block.caption|retconChange('p', false) }}</figcaption>
+                {% endif %}
+            </figure>
+        </div>
+    </section>
+{% endblock %}

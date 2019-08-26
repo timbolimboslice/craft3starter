@@ -1,0 +1,19 @@
+{% block content %}
+    {% set columnWidth = block.contentWidth is empty ? 8 : block.contentWidth %}
+    {% set imgWidth = (60 * columnWidth + 20 * (columnWidth + 1)) * 2 %}
+
+    <section data-type="text-module" class="module text-module {{ block.noMarginBottom ? "no-margin-bottom" }}">
+        <div class="site-width">
+            {% if block.contentArea is not empty %}
+                <div class="content-wrapper col-{{ columnWidth }} center-col">
+                    {{ block.contentArea | retcon([
+                            ["wrap", "img", ".img-wrapper"],
+                            ["transform", { width: imgWidth, mode: 'fit' }],
+                            ["wrap", "iframe", ".video-wrapper"]
+                        ])|raw
+                    }}
+                </div>
+            {% endif %}
+        </section>
+    </section>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% block content %}
+    <section data-type="image-text-module" class="module image-text-module {{ block.imageAlignment }} {{ block.noMarginBottom ? "no-margin-bottom" }}  ">
+        <div class="flex col-14 center-col side-padding">
+            {% set img = block.image.one() %}
+            {% if img is not null %}
+                {% if img.height > img.width %}
+                    {% set orientation = "vertical" %}
+                    {% set imgs = craft.imager.transformImage(img, [
+                        { width: 550, height: 785, format: 'webp' },
+                        { width: 1100, height: 1570, format: 'webp' },
+                        { width: 550, height: 785 },
+                        { width: 1100, height: 1570 }
+                        ], { mode: 'crop', position: img.getFocalPoint() }
+                    )%}
+                {% else %}
+                    {% set orientation = "horizontal" %}
+                    {% set imgs = craft.imager.transformImage(img, [
+                        { width: 720, format: 'webp' },
+                        { width: 1440, format: 'webp' },
+                        { width: 720 },
+                        { width: 1440 }
+                        ], { mode: 'fit', position: img.getFocalPoint() }
+                    )%}
+                {% endif %}
+
+                <div class="img-side">
+                    <div class="img-wrapper {{ orientation }}">
+                        <picture>
+                            <source srcset="{{ imgs[0] }} 1x, {{ imgs[1] }} 2x" media="(min-width: 769px)" type="image/webp">
+                            <source srcset="{{ imgs[0] }} 1x, {{ imgs[1] }} 2x" media="(max-width: 768px)" type="image/webp">
+                            <source srcset="{{ imgs[2] }} 1x, {{ imgs[3] }} 2x" media="(min-width: 769px)" type="image/{{ img.extension }}">
+                            <source srcset="{{ imgs[3] }} 1x, {{ imgs[3] }} 2x" media="(max-width: 768px)" type="image/{{ img.extension }}">
+                            <img src="{{ imgs[3] }}" alt="{{ img.title }}"/>
+                        </picture>
+                    </div>
+                </div>
+            {% endif %}
+        
+            {% if block.contentArea is not empty %}
+                <div class="content-side side-padding">
+                    <div class="content-wrapper col-4">
+                        {{ block.contentArea }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

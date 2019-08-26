@@ -1,0 +1,74 @@
+{% block content %}
+    <section data-type="form-module" class="module form-module side-padding {{ block.noMarginBottom ? "no-margin-bottom" }} flex">		
+        <div class="form-wrapper col-7">
+            {% macro errorList(errors) %}
+                {% if errors %}
+                    <ul class="errors">
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endmacro %}
+            {% from _self import errorList %}
+
+            {% set form = block.form.setConfig({
+                attributes: {
+                    'class': 'wf-form',
+                    'novalidate':"validate"
+                },
+                submitButton: {
+                    "type": "button",
+                    "label": block.buttonText|default("Submit"),
+                    "attributes": {
+                        "class": "btn"
+                    }
+                }
+            }) %}
+            {{ wheelform.recaptchaV3( {'action': "" })}}
+
+            {{ form.open() }}
+
+                {% if block.contentArea is not empty %}
+                    <div class="content-wrapper center-text col-5 center-col side-padding">
+                        {{ block.contentArea | retconAttr( 'p', { 'class' : 'text-small' } ) }}
+                    </div>
+                {% endif %}
+
+                {{ wheelformErrors['form'] is defined ? errorList(wheelformErrors['form']) }}
+                {{ wheelformErrors['recaptcha'] is defined ? errorList(wheelformErrors['recaptcha']) }}
+                {{ wheelformErrors['honeypot'] is defined ? errorList(wheelformErrors['honeypot']) }}
+
+                {% for field in form.fields %}
+                    {% if field.type == "checkbox" %}
+                        <div class="wf-group checkbox flex {{ field.containerClass }}">
+                            <div class="col-3">
+                                <label>{{ field.label }}</label>
+                                <em style="text-transform: none;">Check all that apply</em>
+                            </div>
+                            <div class="col-2">
+                                {% for item in field.items %}
+                                    <div class="cb-wrapper">
+                                        <label class="cb-label sans-serif" for="{{item}}">
+                                            {{ item }}
+                                            <input {{values[field.name] is defined and item in values[field.name] ? ' checked="checked"' : '' }} type="checkbox" name="{{ item }}" id="{{ item }}" value="{{ item }}" />
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        {{ field.render() }}
+                    {% endif %}
+                    
+                    {{ wheelformErrors[field.name] is defined ? errorList(wheelformErrors[field.name]) }}
+                {% endfor %}
+            {{ form.close() }}
+            <div class="confirmation-text">
+                <p class="success-text hide center-text">{{ block.successText|default("Thank you.") }}</p>
+                <p class="failure-text hide center-text">{{ block.failureText|default("Something went wrong, please try again later.")}}</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

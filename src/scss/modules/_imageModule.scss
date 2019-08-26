@@ -1,6 +1,7 @@
 @import 'vars';
 
 .image-module {
+	
 	picture + figcaption {
 		margin-top: 10px;
 	}
@@ -13,5 +14,25 @@
 		object-fit: cover;
 		object-position: 50% 50%;
 		font-family: 'object-fit: cover; object-position: 50% 50%;';
+	}
+}
+
+//laptop styles
+@media screen 
+and (orientation: landscape)
+and (max-height: 700px) {
+	.image-module {
+		height: 90vh;
+
+		.img-wrapper {
+			height: 90vh;
+		}
+
+		img {
+			height: 100%;
+			object-fit: contain;
+			object-position: 50% 50%;
+			font-family: 'object-fit: contain; object-position: 50% 50%;';
+		}
 	}
 }

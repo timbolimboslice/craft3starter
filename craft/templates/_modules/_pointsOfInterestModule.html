@@ -1,0 +1,77 @@
+{% block content %}
+    <section data-type="points-of-interest-module" class="module points-of-interest-module {{ block.noMarginBottom ? "no-margin-bottom" }}">          
+        {% if block.contentArea is not empty %}	
+            <div class="content-wrapper col-6 center-col side-padding center-text">
+                {{ block.contentArea }}					
+            </div>
+        {% endif %}
+
+        {% set placeCategories = block.poiCategories.with(['icon']).all() %}
+
+        {% set places = craft.entries()
+            .section('places')
+            .limit(null)
+            .relatedTo(placeCategories)
+            .all() 
+        %}
+        {% set startLat = "" %}
+        {% set startLng = "" %}
+        {% set startIcon = block.startingCoordinatesIcon.one() %}
+
+        {% for coord in block.startingCoordinates %}
+            {% set startLat = coord.latitude %}
+            {% set startLng = coord.longitude %}
+        {% endfor %}
+
+        <div class="map-list-wrapper flex">
+            {% if places|length %}
+                <div class="poi-list-wrapper horz-scroll slim-scrollbar">
+                    <ul class="poi-list">
+                        {% for place in places %}
+                            {% if place.longitude matches '/^[-+]?[0-9]*\\.?[0-9]+$/' and place.latitude matches '/^[-+]?[0-9]*\\.?[0-9]+$/' %}
+                                {% set category = place.placeCategory.one() %}
+                                <li data-lat="{{ place.latitude }}" data-lng="{{ place.longitude }}" data-id="{{ place.id }}" data-category="{{ category.title|lower|replace(" ", "-")|replace("&", "-") }}" data-displaycategory="{{ category.title }}" class="white-text poi-list-item">
+                                    <h6 class="light-blue-text subhead sans-serif">{{ category.title }}</h6>
+                                    <div class="flex">
+                                        <h4 class="white-text">{{ place.title }}</h4>
+                                        {% if place.website is not empty %}
+                                            <a class="external-icon" href="{{ place.website }}" target="_blank" rel="noopener noreferrer">
+                                                Website
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                    <p class="text-small address no-margin hide">
+                                        {{ place.streetAddress }}<br>
+                                        {{ place.city }}, TX {{ place.zip }}<br>
+                                        {% if place.phone is not empty %}
+                                            <span class="text-smaller">{{ place.phone }}</span>
+                                        {% endif %}
+                                    </p>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <div class="map-wrapper" data-iconurl="{{ startIcon is not null ? startIcon.url : null }}" data-lat="{{ startLat }}" data-lng="{{ startLng }}">
+                <div class="map-inner">
+                    <div id="map"></div>
+                    {% if placeCategories|length %}
+                        <div class="category-list-wrapper col-11 center-col horz-scroll slim-scrollbar">
+                            <ul class="category-list flex space-between">
+                                <li class="showing subhead sans-serif active" data-category="all">All</li>
+                                {% for category in placeCategories %}
+                                    {% set icon = category.icon[0] ?? null %}
+                                    <li class="subhead sans-serif" data-icon="{{ icon is not null ? icon.url() }}" data-category="{{ category.title|lower|replace(" ", "-")|replace("&", "-") }}">
+                                        {{ category.title }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

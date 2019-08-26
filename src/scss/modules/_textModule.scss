@@ -1,6 +1,9 @@
 @import 'vars';
 
 .text-module {
+	position: relative;
+
+	
 	h1 { padding-top: 20px; }
 	h2 { padding-top: 18px; }
 	h3 { padding-top: 16px; }
@@ -17,15 +20,22 @@
 		padding: 20px 7.5%;
 	}
 
+	.content-wrapper {
+		position: relative;
+		z-index: 1;
+	}
+
 	.img-left {
+		width: 50%;
 		float: left;
-		margin: 0 #{$col-gutter * 2} 0 -7.5%;
+		margin: 0 7% 1% -7.5%;
 		max-width: $col-base * 4 + $col-gutter * 3;
 	}
 
 	.img-right {
+		width: 50%;
 		float: right;
-		margin: 0 -7.5% 0 #{$col-gutter * 2};
+		margin: 0 -7.5% 1% 7%;
 		max-width: $col-base * 4 + $col-gutter * 3;
 	}
 
@@ -45,5 +55,18 @@
 	.img-center figcaption {
 		margin-top: 10px;
 		font-size: $text-small;
+	}
+	
+}
+
+@media screen and (max-width: 600px) {
+	.text-module {
+		
+	}
+}
+
+@media screen and (max-width: $mobile-break) {
+	.text-module {
+		
 	}
 }

@@ -1,0 +1,64 @@
+{% block content %}
+    <section data-type="gallery-module" class="module gallery-module {{ block.noMarginBottom ? "no-margin-bottom" }}  ">
+        {% if block.contentArea is not empty %}
+            <div class="content-wrapper col-8 center-col side-padding">
+                {{ block.contentArea }}
+            </div>
+        {% endif %}
+
+        {% if block.gallery|length %}
+            <div style="position: relative">
+                <div class="gallery-wrapper regular">
+                    <div class="gallery">
+                        {% for slide in block.gallery.all() %}
+                            {% set img = slide.image.one() %}
+                            {% if img is not null %}
+                                {% set imgs = craft.imager.transformImage(img, [
+                                    { width: 1200, height: 800, format: 'webp' },
+                                    { width: 2400, height: 1600, format: 'webp' },
+                                    { width: 1200, height: 800 },
+                                    { width: 2400, height: 1600 }
+                                    ], { mode: 'crop', position: img.getFocalPoint() }
+                                )%}
+
+                                <div class="slide">
+                                    <div class="img-wrapper">										
+                                        <picture>
+                                            <source srcset="{{ imgs[0] }} 1x, {{ imgs[1] }} 2x" media="(min-width: 769px)" type="image/webp">
+                                            <source srcset="{{ imgs[0] }} 1x, {{ imgs[1] }} 2x" media="(max-width: 768px)" type="image/webp">
+                                            <source srcset="{{ imgs[2] }} 1x, {{ imgs[3] }} 2x" media="(min-width: 769px)" type="image/{{ img.extension }}">
+                                            <source srcset="{{ imgs[3] }} 1x, {{ imgs[3] }} 2x" media="(max-width: 768px)" type="image/{{ img.extension }}">
+                                            <img src="{{ imgs[3] }}" alt="{{ img.title }}"/>
+                                        </picture>
+
+                                        <div class="slide-caption">
+                                            {% if slide.imageTitle is not empty %}
+                                                <h5>{{ slide.imageTitle }}</h5>
+                                            {% endif %}
+                                            {% if slide.imageCaption is not empty %}
+                                                <p class="bold-text text-small">{{ slide.imageCaption }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <button class="flickity-button flickity-prev-next-button next custom" type="button" aria-label="Next">
+                        {% include "./_svgs/prev-next-arrow.svg" %}
+                    </button>
+                </div>
+                 <div class="line-counter-wrapper">
+                    <div class="line-wrapper">
+                        <div class="ui-highlight"></div>
+                    </div>
+                    <div class="counter-wrapper center-text">
+                        <span class="current-slide">01</span>
+                        <span class="total-slide">/ {{ block.gallery|length < 10 ? '0' ~ block.gallery|length : block.gallery|length  }}</span>
+                    </div>
+                </div>
+            </div>
+            
+        {% endif %}
+    </section>
+{% endblock %}

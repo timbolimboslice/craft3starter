@@ -1,9 +1,21 @@
 @import 'vars';
 
 .module {
-	margin-bottom: 100px;
+	margin-bottom: 7%;
 
 	&.no-margin-bottom {
 		margin-bottom: 0;
+	}
+}
+
+@media screen and (max-width: 1200px) {
+	.module {
+		margin-bottom: 7.5%;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.module {
+		margin-bottom: 14%;
 	}
 }

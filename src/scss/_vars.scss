@@ -37,3 +37,9 @@ $text-largest: #{22px/$browser-context}rem;
 //columns
 $col-base: 60px;
 $col-gutter: 20px;
+
+//usage: max-width: nth($cols, 6);
+$cols: ();
+@for $i from 1 through 16 {
+  $cols: append($cols, $col-base * $i + (($i +1) * $col-gutter));
+}
